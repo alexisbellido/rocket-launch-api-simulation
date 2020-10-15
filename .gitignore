@@ -1,0 +1,7 @@
+*.pyc
+._*
+
+.bash_history
+.DS_Store
+
+**/secrets/*
