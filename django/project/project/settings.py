@@ -10,7 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import yaml
 from pathlib import Path
+
+# Works for Kubernetes (see how secret is mounted with subPath)
+#  and Docker Compose
+with open('/run/secrets/config.yaml', 'r') as f:
+    CONFIG = yaml.load(f, Loader=yaml.SafeLoader)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,13 +27,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # TODO get it from config.yaml
-SECRET_KEY = ''
+SECRET_KEY = CONFIG['secret_key']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -76,8 +84,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': CONFIG['databases']['default']['database'],
+        'USER': CONFIG['databases']['default']['user'],
+        'PASSWORD': CONFIG['databases']['default']['password'],
+        'HOST': CONFIG['databases']['default']['host'],
+        'PORT': CONFIG['databases']['default']['port'],
     }
 }
 

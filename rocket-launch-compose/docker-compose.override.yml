@@ -1,0 +1,27 @@
+# Extra configuration for local development.
+# Runs by default with basic docker-compose up.
+
+version: "3.7"
+
+services:
+  app:
+    depends_on:
+      - database
+  database:
+    image: postgres:10.12
+    volumes:
+      - type: volume
+        source: rldata
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+    # This is only for development.
+    # If you want to secure these credentials and still
+    # work with Docker Compose use swarm mode and secrets.
+    environment:
+      - POSTGRES_DB=rocketlaunch
+      - POSTGRES_USER=xhag3u23s
+      - POSTGRES_PASSWORD=XHdh294KK29421324
+volumes:
+  # this is a named volume managed by Docker, not a bind mount pointing to the host
+  rldata:

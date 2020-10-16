@@ -61,8 +61,7 @@ EXPOSE $PORT
 # Copy the Python virtual environment setup. This is the multi-stage build magic.
 COPY --from=builder /env /env
 
-# TODO
-# COPY $PROJECT_SOURCE_DIR $PROJECT_TARGET_DIR
+COPY $PROJECT_SOURCE_DIR $PROJECT_TARGET_DIR
 
 RUN mkdir -p /run/secrets
 RUN mkdir -p /code/bin
