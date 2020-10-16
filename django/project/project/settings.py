@@ -40,6 +40,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    'rocketlaunch.apps.RocketLaunchConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
