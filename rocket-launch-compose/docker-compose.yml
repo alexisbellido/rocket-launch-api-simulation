@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  app:
+    image: alexisbellido/rocket-launch:1.0
+    build:
+      context: ../django
+      args:
+        # Uses the value of the environment variable of the same name
+        # passed to docker-compose up
+        - SSH_PRIVATE_KEY
+    command: development
+    # to keep container running for initial runs
+    # command: tail -f /dev/null
+    ports:
+      - "8001:8000"
+    volumes:
+      # bind mount to try latest code from the host
+      - type: bind
+        source: ../django/project
+        target: /code/project
+      - type: bind
+        source: ./secrets/config.yaml
+        target: /run/secrets/config.yaml
+      - type: bind
+        source: ~/rocket-launch-dev/static
+        target: /code/project/static

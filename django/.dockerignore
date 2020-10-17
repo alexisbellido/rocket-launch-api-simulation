@@ -1,0 +1,27 @@
+# comment
+.bash_history
+*/temp*
+**/node_modules
+npm-debug.log
+temp_*
+!*/templates
+.dockerignore
+Dockerfile
+**/__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+**/config.yaml
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.cache
+coverage.xml
+*,cover
+*.log
+.git
+**/config
