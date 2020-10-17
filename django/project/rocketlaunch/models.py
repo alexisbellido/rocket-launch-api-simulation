@@ -20,3 +20,14 @@ class Location(models.Model):
 
     class Meta:
         ordering = ["id"]
+
+
+class Status(models.Model):
+    status = models.CharField(max_length=128)
+
+    def __str__(self):
+        return f"{self.status}"
+
+    class Meta:
+        verbose_name_plural = "Statuses"
+        ordering = ["id"]
