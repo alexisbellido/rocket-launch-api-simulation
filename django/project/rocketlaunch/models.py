@@ -31,3 +31,19 @@ class Status(models.Model):
     class Meta:
         verbose_name_plural = "Statuses"
         ordering = ["id"]
+
+
+class Launch(models.Model):
+    name = models.CharField(max_length=128)
+    cost = models.IntegerField(null=True)
+    time_date = models.DateTimeField()
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name_plural = "Launches"
+        ordering = ["id"]
