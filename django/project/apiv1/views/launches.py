@@ -9,3 +9,10 @@ class LaunchList(generics.ListCreateAPIView):
     """
     queryset = Launch.objects.all()
     serializer_class = LaunchSerializer
+
+# TODO
+# 1. Average launch cost (excluding nulls)
+
+# 2. Percent of launches where mission_status is success
+
+# 3. The most popular month for rocket launches

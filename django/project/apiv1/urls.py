@@ -4,6 +4,7 @@ from .views import launches
 
 
 urlpatterns = [
-    path('locations/', locations.LocationList.as_view()),
-    path('launches/', launches.LaunchList.as_view()),
+    path('locations/', locations.LocationList.as_view(), name='locations'),
+    path('top-locations/', locations.TopLocationsAPIView.as_view(), name='top-locations'),
+    path('launches/', launches.LaunchList.as_view(), name='launches'),
 ]
