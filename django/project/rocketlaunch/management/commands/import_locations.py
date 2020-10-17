@@ -1,10 +1,10 @@
 import csv
 from django.core.management.base import BaseCommand
-from rocketlaunch.models import Company
+from rocketlaunch.models import Location
 
 
 class Command(BaseCommand):
-    help = "Import companies"
+    help = "Import locations"
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -21,10 +21,10 @@ class Command(BaseCommand):
                 reader = csv.DictReader(csvfile)
                 for row in reader:
                     id = row["id"]
-                    name = row["name"]
-                    _, created = Company.objects.get_or_create(
+                    location = row["location"]
+                    _, created = Location.objects.get_or_create(
                         id=id,
-                        name=name
+                        location=location
                     )
                     if created:
                         action = "created"
@@ -32,7 +32,7 @@ class Command(BaseCommand):
                         action = "updated"
                     self.stdout.write(
                         self.style.SUCCESS(
-                            f"Company successfully {action}: {id} {name}"
+                            f"Location successfully {action}: {id} {location}"
                         )
                     )
         else:

@@ -24,6 +24,7 @@ Copy the initial data CSV files to the app service container, then log in and in
   # django-admin makemigrations rocketlaunch
   # django-admin migrate rocketlaunch
   # django-admin import_companies --input /tmp/csv/rocket_companies.csv
+  # django-admin import_locations --input /tmp/csv/launch_location.csv
 ```
 
 ### Starting the services
