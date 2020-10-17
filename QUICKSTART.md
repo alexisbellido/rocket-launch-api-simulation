@@ -17,6 +17,15 @@ The data from the CSV files is initially fed into PostgreSQL as instances of Dja
 
 ### Installation
 
+Copy the initial data CSV files to the app service container, then log in and initialize the database with data running the provider Django commands in the order indicated below.
+
+```
+  $ docker exec -it --user root rocket-launch-compose_app_1 docker-entrypoint.sh bash
+  # django-admin makemigrations rocketlaunch
+  # django-admin migrate rocketlaunch
+  # django-admin import_companies --input /tmp/csv/rocket_companies.csv
+```
+
 ### Starting the services
 
 ### The endpoints
