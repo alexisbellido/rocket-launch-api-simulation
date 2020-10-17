@@ -1,6 +1,8 @@
 import csv
+import datetime
 from django.core.management.base import BaseCommand
-# from rocketlaunch.models import Launch
+from django.utils.timezone import make_aware
+from rocketlaunch.models import Launch
 
 
 class Command(BaseCommand):
@@ -22,33 +24,39 @@ class Command(BaseCommand):
                 for row in reader:
                     id = row["id"]
                     name = row["mission_name"]
-                    cost = row["mission_cost"]
-                    time_date = row["launch_time_date"]
+                    try:
+                        cost = int(row["mission_cost"])
+                    except ValueError:
+                        cost = None
+                    time_date_obj = make_aware(
+                        datetime.datetime.strptime(
+                            row["launch_time_date"],
+                            '%Y-%m-%d %H:%M:%S'
+                        )
+                    )
+                    # Use foreign key value directly for
+                    # company_id, status_id, location_id
                     company_id = row["rocket_company_id"]
                     status_id = row["mission_status_id"]
                     location_id = row["launch_location_id"]
-                    # _, created = Launch.objects.get_or_create(
-                    #     id=id,
-                    #     name=name
-                    # )
-                    # if created:
-                    #     action = "created"
-                    # else:
-                    #     action = "updated"
-                    print(
-                        id,
-                        name,
-                        cost,
-                        time_date,
-                        company_id,
-                        status_id,
-                        location_id
+                    _, created = Launch.objects.get_or_create(
+                        id=id,
+                        name=name,
+                        cost=cost,
+                        time_date=time_date_obj,
+                        company_id=company_id,
+                        status_id=status_id,
+                        location_id=location_id
                     )
-                    # self.stdout.write(
-                    #     self.style.SUCCESS(
-                    #         f"Launch successfully {action}: {id} {name}"
-                    #     )
-                    # )
+                    if created:
+                        action = "created"
+                    else:
+                        action = "updated"
+                    self.stdout.write(
+                        self.style.SUCCESS(
+                            f"Launch successfully {action}: {id} {name}"
+                        )
+                    )
         else:
             self.stderr.write(
                 self.style.WARNING(
