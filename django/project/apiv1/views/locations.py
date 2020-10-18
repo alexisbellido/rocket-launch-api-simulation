@@ -13,7 +13,7 @@ class LocationList(generics.ListCreateAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
 
-# TODO group by location and count
+
 class TopLocationsAPIView(APIView):
     """
     Retrieves the top launch locations.
@@ -41,5 +41,25 @@ class TopLocationsAPIView(APIView):
         }
         return Response(data)
 
-# 2. Top three countries where launch_locations take place
-# accept query parameter that defaults to 3
+
+# TODO
+# 2. Top three countries where launches take place
+class TopCountriesAPIView(APIView):
+    """
+    Retrieves the top countries where launches take place.
+    The default is three countries and you can pass
+    a different number using the limit query parameter.
+ 
+    /api/v1/top-countries/?limit=5
+    """
+    permission_classes = ()
+
+    def get(self, request, *args, **kwargs):
+        top_countries = []
+        limit = int(request.query_params.get("limit", 3))
+        data = {
+            "success": True,
+            "top_countries": top_countries,
+            "limit": int(limit),
+        }
+        return Response(data)

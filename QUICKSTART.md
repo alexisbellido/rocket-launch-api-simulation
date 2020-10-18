@@ -41,8 +41,21 @@ Copy the initial data CSV files to the app service container, then log in and in
 
 #### Average launch cost (excluding nulls)
 
+```
+  $ curl -X GET "http://localhost:8001/api/v1/average-cost/"
+```
+
 #### Percent of launches where mission_status is success
+
+```
+  $ curl -X GET "http://localhost:8001/api/v1/successful-launches/"
+```
+
 #### The most popular month for rocket launches
+
+```
+   $ curl -X GET "http://localhost:8001/api/v1/top-month-for-launches/"
+```
 
 #### Top three launch locations
 
@@ -56,4 +69,14 @@ You can use a `limit` query parameter to get a different number of top locations
   $ curl -X GET "http://localhost:8001/api/v1/top-locations/?limit=5"
 ```
 
-#### Top three countries where launch_locations take place
+#### Top three countries where launches take place
+
+```
+  $ curl -X GET "http://localhost:8001/api/v1/top-countries/"
+```
+
+You can use a `limit` query parameter to get a different number of top countries.
+
+```
+  $ curl -X GET "http://localhost:8001/api/v1/top-countries/?limit=5"
+```
