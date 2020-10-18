@@ -47,4 +47,3 @@ Copy the initial data CSV files to the app service container, then log in and in
 #### The most popular month for rocket launches
 #### Top three launch_locations
 #### Top three countries where launch_locations take place
-
