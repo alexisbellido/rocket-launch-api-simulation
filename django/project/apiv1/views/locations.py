@@ -1,3 +1,4 @@
+from django.db.models import Count
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -24,10 +25,18 @@ class TopLocationsAPIView(APIView):
     permission_classes = ()
 
     def get(self, request, *args, **kwargs):
-        limit = request.query_params.get("limit", 3)
-
+        top_locations = []
+        limit = int(request.query_params.get("limit", 3))
+        locations_counter = Location.objects.annotate(count_launches=Count('launch__id')).order_by('-count_launches')[:limit]
+        for location in locations_counter:
+            top_locations.append({
+                "id": location.id,
+                "location": location.location,
+                "count_launches": location.count_launches,
+            })
         data = {
             "success": True,
+            "top_locations": top_locations,
             "limit": int(limit),
         }
         return Response(data)
