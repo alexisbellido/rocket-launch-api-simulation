@@ -77,6 +77,11 @@ You can use a `limit` query parameter to get a different number of top locations
 
 You can use a `limit` query parameter to get a different number of top countries.
 
-```
+``` 
   $ curl -X GET "http://localhost:8001/api/v1/top-countries/?limit=5"
 ```
+
+### Future improvements
+
+- Countries model to avoid parsing locations.
+- Unit tests.

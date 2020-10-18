@@ -42,8 +42,6 @@ class TopLocationsAPIView(APIView):
         return Response(data)
 
 
-# TODO
-# 2. Top three countries where launches take place
 class TopCountriesAPIView(APIView):
     """
     Retrieves the top countries where launches take place.
@@ -55,8 +53,27 @@ class TopCountriesAPIView(APIView):
     permission_classes = ()
 
     def get(self, request, *args, **kwargs):
-        top_countries = []
         limit = int(request.query_params.get("limit", 3))
+        launches = Launch.objects.all()
+        counter = {}
+        for launch in launches:
+            country = launch.location.location.split(',')[-1].strip()
+            counter[country] = counter.setdefault(country, 0) + 1
+        top_count = 0
+        top_countries = []
+        for country, count_launches in sorted(
+            counter.items(),
+            key=lambda item: item[1],
+            reverse=True
+        ):
+            top_countries.append({
+                "country": country,
+                "count": count_launches,
+            })
+            top_count += 1
+            if top_count == limit:
+                break
+
         data = {
             "success": True,
             "top_countries": top_countries,
