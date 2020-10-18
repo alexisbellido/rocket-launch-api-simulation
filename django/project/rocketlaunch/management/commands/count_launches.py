@@ -18,10 +18,12 @@ class Command(BaseCommand):
         launches = Launch.objects.all()
         counter = {}
         for launch in launches:
-            if launch.location.id in counter:
-                counter[launch.location.id] += 1
-            else:
-                counter[launch.location.id] = 0
+            # this is a more Pythonic alternative to the if/else block below
+            counter[launch.location.id] = counter.setdefault(launch.location.id, 0) + 1
+            # if launch.location.id in counter:
+            #     counter[launch.location.id] += 1
+            # else:
+            #     counter[launch.location.id] = 1
 
         top_count = 0
         result = []
