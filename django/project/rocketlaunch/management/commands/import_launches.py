@@ -54,7 +54,7 @@ class Command(BaseCommand):
                         action = "updated"
                     self.stdout.write(
                         self.style.SUCCESS(
-                            f"Launch successfully {action}: {id} {name}"
+                            f"Launch successfully {action}: {id} {name}."
                         )
                     )
         else:

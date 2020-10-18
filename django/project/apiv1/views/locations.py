@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from apiv1.serializers import LocationSerializer
-from rocketlaunch.models import Location
+from rocketlaunch.models import Location, Launch
 
 
 class LocationList(generics.ListCreateAPIView):
@@ -12,7 +12,7 @@ class LocationList(generics.ListCreateAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
 
-# TODO
+# TODO group by location and count
 class TopLocationsAPIView(APIView):
     """
     Retrieves the top launch locations.

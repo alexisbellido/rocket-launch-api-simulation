@@ -32,7 +32,7 @@ class Command(BaseCommand):
                         action = "updated"
                     self.stdout.write(
                         self.style.SUCCESS(
-                            f"Status successfully {action}: {id} {status}"
+                            f"Status successfully {action}: {id} {status}."
                         )
                     )
         else:
