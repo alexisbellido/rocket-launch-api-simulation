@@ -7,7 +7,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--top', 
+            '--top',
             dest="top",
             type=int,
             default=10,
@@ -25,10 +25,14 @@ class Command(BaseCommand):
 
         top_count = 0
         result = []
-        for location_id, location_count in sorted(counter.items(), key=lambda item: item[1], reverse=True):
+        for location_id, location_count in sorted(
+            counter.items(),
+            key=lambda item: item[1],
+            reverse=True
+        ):
             self.stdout.write(
                 self.style.SUCCESS(
-                    f"location_id: {location_id}, location_count: {location_count}."
+                    f"location_id {location_id} [{location_count}]."
                 )
             )
             location = Location.objects.get(id=location_id)
