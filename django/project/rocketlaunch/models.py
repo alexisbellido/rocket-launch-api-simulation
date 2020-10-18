@@ -23,6 +23,11 @@ class Location(models.Model):
 
 
 class Status(models.Model):
+    PARTIAL_FAILURE = 1
+    SUCCESS = 2
+    PRELAUNCH_FAILURE = 3
+    FAILURE = 4
+
     status = models.CharField(max_length=128)
 
     def __str__(self):

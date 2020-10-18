@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from apiv1.serializers import LaunchSerializer
-from rocketlaunch.models import Launch
+from rocketlaunch.models import Launch, Status
 
 
 class LaunchList(generics.ListCreateAPIView):
@@ -36,7 +36,6 @@ class AverageCostAPIView(APIView):
         return Response(data)
 
 
-# TODO 2. Percent of launches where mission_status is success
 class SuccessfulLaunchesAPIView(APIView):
     """
     Retrieves the percentage of successful launches.
@@ -45,9 +44,14 @@ class SuccessfulLaunchesAPIView(APIView):
     permission_classes = ()
 
     def get(self, request, *args, **kwargs):
+        total_launches = Launch.objects.all().count()
+        successful_launches = Launch.objects.filter(status__id=Status.SUCCESS).count()
+        percentage_success = round((successful_launches * 100) / total_launches, 2)
         data = {
             "success": True,
-            "percentage_success": 100,
+            "total_launches": total_launches,
+            "successful_launches": successful_launches,
+            "percentage_success": percentage_success,
         }
         return Response(data)
 
