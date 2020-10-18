@@ -1,4 +1,6 @@
-from django.db.models import Avg, Sum
+from datetime import datetime
+from django.db.models import Avg, Sum, Count
+from django.db.models.functions import ExtractMonth
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -56,7 +58,6 @@ class SuccessfulLaunchesAPIView(APIView):
         return Response(data)
 
 
-# TODO 3. The most popular month for rocket launches
 class TopMonthForLaunchesAPIView(APIView):
     """
     Retrieves the most popular month for launches.
@@ -65,8 +66,13 @@ class TopMonthForLaunchesAPIView(APIView):
     permission_classes = ()
 
     def get(self, request, *args, **kwargs):
+        month_counter = Launch.objects.annotate(
+            month=ExtractMonth('time_date')
+            ).values('month').annotate(count=Count('id')).order_by('-month')[0]
         data = {
             "success": True,
-            "top_month": "tbd",
+            "top_month": month_counter['month'],
+            "top_month_name": datetime.strptime(str(month_counter['month']), "%m").strftime('%B'),
+            "launches_count": month_counter['count']
         }
         return Response(data)
