@@ -45,6 +45,12 @@ Copy the initial data CSV files to the app service container, then log in and in
   $ curl -X GET "http://localhost:8001/api/v1/average-cost/"
 ```
 
+You can also pass a parameter to filter by company or by start and end date. The date format is YYYY-MM-DD and if any of them is not passed the API defaults to January 1st, 1950 (a safe day way before the oldest launch) for start and today's date for end.
+
+```
+  $ curl -X GET "http://localhost:8001/api/v1/successful-launches/?company=rae&start=1950-12-03&end=1987-03-24"
+```
+
 #### Percent of launches where mission_status is success
 
 ```
