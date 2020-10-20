@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from django.db.models import Avg, Sum, Count
 from django.db.models.functions import ExtractMonth
 from rest_framework import generics
@@ -42,18 +42,55 @@ class SuccessfulLaunchesAPIView(APIView):
     """
     Retrieves the percentage of successful launches.
     /api/v1/successful-launches
+
+    You can pass a company and/or date range.
+    /api/v1/successful-launches/?company=rae
+    /api/v1/successful-launches/?start=YYYY-MM-DD&end=YYYY-MM-DD
+    /api/v1/successful-launches/?company=rae&start=YYYY-MM-DD&end=YYYY-MM-DD
     """
     permission_classes = ()
 
     def get(self, request, *args, **kwargs):
-        total_launches = Launch.objects.all().count()
-        successful_launches = Launch.objects.filter(status__id=Status.SUCCESS).count()
-        percentage_success = round((successful_launches * 100) / total_launches, 2)
+        company = request.query_params.get("company", None)
+        start = request.query_params.get("start", None)
+        if start:
+            try:
+                start_date = date.fromisoformat(start)
+            except ValueError:
+                start_date = date(1950, 1, 1)
+        else:
+            start_date = date(1950, 1, 1)
+        end = request.query_params.get("end", None)
+        if end:
+            try:
+                end_date = date.fromisoformat(end)
+            except ValueError:
+                end_date = date.today()
+        else:
+            end_date = date.today()
+        if company:
+            total_launches = Launch.objects.filter(company__name__iexact=company)
+            successful_launches = Launch.objects.filter(status__id=Status.SUCCESS, company__name__iexact=company)
+        else:
+            total_launches = Launch.objects.all()
+            successful_launches = Launch.objects.filter(status__id=Status.SUCCESS)
+
+        total_launches = total_launches.filter(time_date__range=(start_date, end_date)).count()
+        successful_launches = successful_launches.filter(time_date__range=(start_date, end_date)).count()
+
+        try:
+            percentage_success = round((successful_launches * 100) / total_launches, 2)
+        except ZeroDivisionError:
+            percentage_success = 0
+        
         data = {
             "success": True,
             "total_launches": total_launches,
             "successful_launches": successful_launches,
             "percentage_success": percentage_success,
+            "company": company,
+            "start_date": start_date,
+            "end_date": end_date,
         }
         return Response(data)
 

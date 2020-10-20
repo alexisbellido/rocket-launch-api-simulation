@@ -22,6 +22,3 @@ services:
       - type: bind
         source: ./secrets/config.yaml
         target: /run/secrets/config.yaml
-      - type: bind
-        source: ~/rocket-launch-dev/static
-        target: /code/project/static
